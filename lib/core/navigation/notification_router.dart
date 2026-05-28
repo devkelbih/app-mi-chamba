@@ -8,13 +8,11 @@ class NotificationRouter {
     final today = DateTime.now();
     final dayOnly = DateTime(today.year, today.month, today.day);
 
-    // Asegurar que el navegador esté disponible
     final navigator = navigatorKey.currentState;
-    if (navigator != null) {
-      navigator.pushAndRemoveUntil(
-        MaterialPageRoute(builder: (_) => CalendarScreen(openDay: dayOnly)),
-        (route) => false,
-      );
-    }
+    if (navigator == null) return;
+    navigator.pushAndRemoveUntil(
+      MaterialPageRoute(builder: (_) => CalendarScreen(openDay: dayOnly)),
+      (route) => false,
+    );
   }
 }

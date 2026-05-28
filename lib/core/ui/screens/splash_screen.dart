@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mi_semana/core/navigation/notification_router.dart';
+import 'package:mi_semana/core/services/notification_service.dart';
 import 'package:mi_semana/core/startup/app_initializer.dart';
 
 import 'package:mi_semana/core/startup/app_startup_manager.dart';
@@ -61,7 +63,17 @@ class _SplashScreenState extends State<SplashScreen> {
     try {
       // Inicialización principal de la app
       await initializer.initialize();
+      final notificationResponse =
+          NotificationService.initialNotificationResponse;
 
+      if (notificationResponse != null) {
+        NotificationService.initialNotificationResponse = null;
+
+        if (!mounted) return;
+
+        NotificationRouter.openTodayFromNotification();
+        return;
+      }
       // Determinar flujo de navegación (intro o home)
       final result = await _startupManager.determineStartupRoute();
 

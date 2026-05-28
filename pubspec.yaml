@@ -1,7 +1,7 @@
 name: mi_semana
 description: "App de control semanal y recordatorios"
 publish_to: 'none'
-version: 0.1.2+3
+version: 0.1.3+4
 
 environment:
   sdk: ^3.8.1

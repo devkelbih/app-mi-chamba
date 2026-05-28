@@ -68,8 +68,6 @@ class SettingsViewModel extends BaseVmStateManager {
 
   Future<void> _initializeNotificationServiceIfNeeded() async {
     if (_notificationServiceInitialized) return;
-
-    await _notificationService.initialize();
     _notificationServiceInitialized = true;
   }
 
