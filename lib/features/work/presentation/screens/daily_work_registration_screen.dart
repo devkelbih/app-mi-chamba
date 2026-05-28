@@ -7,6 +7,7 @@ import 'package:mi_semana/features/work/domain/entities/constants/months_constan
 import 'package:mi_semana/features/work/domain/entities/constants/work_constants.dart';
 import 'package:mi_semana/features/work/domain/entities/trabajo_catalogo.dart';
 import 'package:mi_semana/features/work/domain/entities/trabajo_dia_detalle.dart';
+import 'package:mi_semana/features/work/presentation/screens/catalog_form_work_screen.dart';
 import 'package:mi_semana/features/work/presentation/viewmodels/catalog_work_viewmodel.dart';
 import 'package:mi_semana/features/work/presentation/viewmodels/daily_work_registration_viewmodel.dart';
 import 'package:mi_semana/features/work/presentation/widgets/select_work_modal_widget.dart';
@@ -62,9 +63,27 @@ class _DailyWorkRegistrationScreenState
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      builder: (_) =>
-          SelectWorkModalWidget(onWorkSelected: _agregarTrabajoAlDia),
+      builder: (_) => SelectWorkModalWidget(
+        onWorkSelected: _agregarTrabajoAlDia,
+        onAddNewWork: _navegarAAgregarTrabajo,
+      ),
     );
+  }
+
+  Future<void> _navegarAAgregarTrabajo() async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            const CatalogFormWorkScreen(), // Sin trabajo = modo creación
+      ),
+    );
+
+    if (result == true && mounted) {
+      final catalogVM = context.read<CatalogWorkViewmodel>();
+      await catalogVM.cargarTrabajos();
+      _mostrarModalAgregarTrabajo();
+    }
   }
 
   void _agregarTrabajoAlDia(Trabajo trabajo) {

@@ -6,8 +6,13 @@ import 'package:provider/provider.dart';
 
 class SelectWorkModalWidget extends StatelessWidget {
   final void Function(Trabajo trabajo) onWorkSelected;
+  final VoidCallback? onAddNewWork;
 
-  const SelectWorkModalWidget({super.key, required this.onWorkSelected});
+  const SelectWorkModalWidget({
+    super.key, 
+    required this.onWorkSelected,
+    this.onAddNewWork,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +28,7 @@ class SelectWorkModalWidget extends StatelessWidget {
           ),
         ),
         constraints: BoxConstraints(
-          maxHeight: MediaQuery.of(context).size.height * 0.4,
+          maxHeight: MediaQuery.of(context).size.height * 0.8,
         ),
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -41,12 +46,17 @@ class SelectWorkModalWidget extends StatelessWidget {
                 ),
               ),
             ),
-            const Text(
-              'Seleccionar un trabajo',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            
+            // Header solo con título
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8),
+              child: Text(
+                'Selecciona un trabajo',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
             ),
-            const SizedBox(height: 16),
+            
             if (viewModel.isLoading)
               const Center(child: CircularProgressIndicator())
             else if (viewModel.trabajos.isEmpty)
@@ -94,6 +104,24 @@ class SelectWorkModalWidget extends StatelessWidget {
                   },
                 ),
               ),
+            
+            // Footer con botón de agregar
+            Padding(
+              padding: const EdgeInsets.only(top: 16),
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  // Cerrar el modal actual
+                  Navigator.pop(context);
+                  // Llamar al callback para agregar nueva actividad
+                  onAddNewWork?.call();
+                },
+                icon: const Icon(Icons.add),
+                label: const Text(
+                  'Agregar nueva',
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
           ],
         ),
       ),
